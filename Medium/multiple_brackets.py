@@ -3,7 +3,6 @@ import re
 def MultipleBrackets(strParam):
   # We filter out only parentheses and brackets
   all_brackets = ''.join(re.findall(r'\(|\)|\[|\]', strParam))
-  length = len(all_brackets)
   if not all_brackets:
     return 1
   # If the number of open brackets parentheses and open brackets doesn't 
