@@ -7,23 +7,13 @@
 # done so the output should be 2. If str is "bcab", "bc" reduces to "a", so you have "aab", then "ab" reduces to "c", and the final 
 # string "ac" is reduced to "b" so the output should be 1.
 
-import re
+from collections import Counter
 def StringReduction(strParam):
-  # These are all the replacements of characters
-  replacers = {'ab': 'c', 'bc': 'a', 'ac': 'b', 'ba': 'c', 'cb': 'a', 'ca': 'b'}
-  # This is a stack for all reductions so far
-  str_stack = [strParam]
-  # This is a list of completed reductions
-  output_list = []
-  while len(str_stack) > 0:
-    word = str_stack.pop(0)
-    matches = False
-    for i in range(len(word) - 1):
-      ts = word[i] + word[i + 1]
-      if ts in replacers:
-        matches = True
-        tsi = word.index(ts)
-        str_stack.append(word[:tsi] + replacers[ts] + word[tsi + 2:])
-    if not matches:
-      output_list.append(word)
-  return min(map(len, output_list))
+  # If all the letters are the same, it can't be reduced, so return length of the string
+  counts = Counter(strParam)
+  if len(counts) == 1:
+    return len(strParam)
+  # We count how many times each letter appears. If all the counts are odd or all are even,
+  # it can only be reduced to two letters. Otherwise, it can always be reduced to one letter.
+  odd_evens = sum(map(lambda a: a % 2, counts.values()))
+  return 2 if odd_evens == 3 or odd_evens == 0 else 1
